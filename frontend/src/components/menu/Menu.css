@@ -1,0 +1,12 @@
+.btn-lg:hover {
+  background-color: #007bff !important;
+  border-top: 0px !important;
+  border-left: 0px !important;
+  border-right: 0px !important;
+  border-bottom: 100px !important;
+  border-color: yellow !important;
+}
+
+.btn-lg::after {
+  background-color: red !important;
+}
