@@ -10,8 +10,8 @@ class IniciarSesion extends Component {
     event.preventDefault();
     let username = this.usernameRef.current.value;
     let password = this.passRef.current.value;
-    let remember = this.rememberRef.current.value;
-    console.log(username);
+    let remember = this.rememberRef.current.checked;
+    console.log(remember);
     this.props.iniciarSesion(username, password, remember);
   };
   render() {

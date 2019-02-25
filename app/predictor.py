@@ -1,3 +1,5 @@
+# coding=utf-8
+
 from sklearn.ensemble import RandomForestClassifier
 import numpy as np
 # import sys
@@ -32,12 +34,12 @@ def pca(X, y, name, ncomponents):
     if ncomponents == 3:
         ax = fig.add_subplot(111, projection='3d')
         for color, i, target_name in zip(colors, [1, 2], target_names):
-            print(color, i, target_name)
+            # print(color, i, target_name)
             ax.scatter(X_r[y == i, 0], X_r[y == i, 1], X_r[y == i, 2],
                        color=color, alpha=.8, lw=lw, label=target_name)
     elif ncomponents == 2:
         for color, i, target_name in zip(colors, [1, 2], target_names):
-            print(color, i, target_name)
+            # print(color, i, target_name)
             plt.scatter(X_r[y == i, 0], X_r[y == i, 1], color=color,
                         alpha=.8, lw=lw, label=target_name)
 
@@ -53,12 +55,12 @@ def load_data(fname):
     data = np.loadtxt(fname)
 
     nfeatures = data.shape[1] - 1
-    print("Data shape: ", data.shape)
-    print("nfeatures: ", nfeatures)
+    # print("Data shape: ", data.shape)
+    # print("nfeatures: ", nfeatures)
 
     X = data[:, :nfeatures]
     Y = data[:, nfeatures]
-    print(X.shape, Y.shape)
+    # print(X.shape, Y.shape)
     return X, Y
 
 # Importancia de los atrubutos: ranking
@@ -72,11 +74,11 @@ def plot_features_rank(clf, X, Y, name):
     indices = np.argsort(importances)[::-1]
 
     # Print the feature ranking
-    print("Feature ranking:")
+    # print("Feature ranking:")
 
-    for f in range(X.shape[1]):
-        print("%d. feature %d (%f)" %
-              (f + 1, indices[f], importances[indices[f]]))
+    # for f in range(X.shape[1]):
+    #     print("%d. feature %d (%f)" %
+    #           (f + 1, indices[f], importances[indices[f]]))
 
     # Plot the feature importances of the forest
     plt.figure()
@@ -108,36 +110,53 @@ def decision_tree(X, Y, name):
 #
 #############################
 def ejecutar_predictor(rutas):
+    results = {}
+    dir_trabajo = rutas['dir_trabajo']
+    id_trabajo = rutas['id_trabajo']
+    # results['id'] = id_trabajo
+    # results[id_trabajo] = {}
+
+    # Cargar y normalizar datos
     X, Y = load_data(rutas['csv'])
     scaler = StandardScaler()
     X = scaler.fit_transform(X)
 
-    dir_trabajo = rutas['dir_trabajo']
-    id_trabajo = rutas['id_trabajo']
-
+    # PCA: selección de características
     pca(X, Y, os.path.join(dir_trabajo, id_trabajo.lower()+".pca.png"),
         ncomponents=2)
+    results['pca'] = os.path.join(
+        dir_trabajo, id_trabajo.lower()+".pca.png")
 
+    # Modelo 1: árbol de decisión. Solo para comprender mejor los resultados
     decision_tree(X, Y, os.path.join(dir_trabajo, id_trabajo.lower()+".tree"))
+    results['tree'] = os.path.join(
+        dir_trabajo, id_trabajo.lower()+".tree.pdf")
 
+    # Modelo 2: random forest.
     clf = RandomForestClassifier(n_estimators=200)
     scores_rf = cross_val_score(clf, X, Y, cv=5)
     # print(scores)
-    print("RF-Accuracy: %0.2f (+/- %0.2f)" %
-          (scores_rf.mean(), scores_rf.std() * 2))
+    # print("RF-Accuracy: %0.2f (+/- %0.2f)" %
+    #       (scores_rf.mean(), scores_rf.std() * 2))
+    results['rf'] = [scores_rf.mean(), scores_rf.std() * 2]
 
+    # Modelo 3: Support Vector Machine.
     # plot_features_rank(clf, X,Y,ruta_csv+".features.png")
     clf = svm.NuSVC(nu=0.1, gamma='scale')
     scores_svm = cross_val_score(clf, X, Y, cv=5)
     # print(scores)
-    print("SVM-Accuracy: %0.2f (+/- %0.2f)" %
-          (scores_svm.mean(), scores_svm.std() * 2))
+    # print("SVM-Accuracy: %0.2f (+/- %0.2f)" %
+    #       (scores_svm.mean(), scores_svm.std() * 2))
+    results['svm'] = [scores_svm.mean(), scores_svm.std() * 2]
 
+    # Modelo 4: kNN
     # plot_features_rank(clf, X,Y,ruta_csv+".features.png")
     clf = KNeighborsClassifier(n_neighbors=5)
     scores_knn = cross_val_score(clf, X, Y, cv=5)
     # print(scores)
-    print("Knn-Accuracy: %0.2f (+/- %0.2f)" %
-          (scores_knn.mean(), scores_knn.std() * 2))
+    # print("Knn-Accuracy: %0.2f (+/- %0.2f)" %
+    #       (scores_knn.mean(), scores_knn.std() * 2))
+    results['knn'] = [scores_knn.mean(), scores_knn.std() * 2]
 
+    return results
     # plt.show()

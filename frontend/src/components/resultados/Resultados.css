@@ -1,15 +1,61 @@
 .resultados {
   display: flex;
-  background-color: #a2d1ec;
-  min-height: 100vh;
   justify-content: center;
   align-items: center;
+  background-color: #a2d1ec;
+  min-height: 100vh;
 }
 
-.form {
-  width: 70vh;
-  height: 50%;
+.contenido {
+  display: flex;
+  flex-direction: row;
+  width: 70%;
   background-color: #ffffff78;
-  padding: 20px;
   border-radius: 10px;
+  /* height: 500px; */
+  /* min-width: 0; */
+}
+
+.detalles {
+  display: flex;
+  flex-direction: column;
+  padding-left: 1em;
+  /* width: 100%; */
+}
+
+.detalles * {
+  margin-bottom: 1em;
+}
+
+.listado {
+  display: flex;
+  flex-direction: column;
+  list-style-type: none;
+  padding-left: 0px;
+  padding-bottom: 0;
+  margin-bottom: 0;
+  height: 100%;
+  width: 20%;
+}
+
+.listado > li {
+  padding: 1em;
+  background-color: white;
+  border-bottom: 1px black solid;
+  word-wrap: break-word; /* si el txt es muy largo, se va a nueva linea */
+}
+
+.listado > li:hover {
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+}
+
+.listado > li:first-child {
+  border-radius: 10px 0 0 0;
+}
+
+.listado > li:last-child {
+  border-radius: 0 0 0 10px;
+  margin-bottom: 0;
 }
