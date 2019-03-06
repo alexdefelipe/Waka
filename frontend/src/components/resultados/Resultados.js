@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import "./Resultados.css";
 import { Bar } from "react-chartjs-2";
+var Chart = require("chart.js");
 
 const BarGraph = props => {
   return (
@@ -55,10 +56,6 @@ class Resultados extends Component {
     this.handleOnClick = this.handleOnClick.bind(this);
   }
 
-  componentDidMount() {
-    // this.handleOnClick(0);
-  }
-
   handleOnClick = id => {
     var aux = this.props.historialTrabajos[id - 1].results;
     aux = JSON.parse(aux);
@@ -101,8 +98,9 @@ class Resultados extends Component {
           <div className="contenido">
             <ul className="listado">{listaTrabajos}</ul>
             <div className="detalles">
-              {/*() => crearGrafico(this.props.data)*/}
-              <BarGraph data={data} />
+              <div className="grafica">
+                <BarGraph data={data} />
+              </div>
               <div className="enlaces">
                 <p>
                   Consulta el resultado del análisis de componentes principales{" "}

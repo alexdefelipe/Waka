@@ -29,9 +29,8 @@ class App extends Component {
 
   componentDidMount() {
     this.scroll("iniciar_sesion");
-    // this.iniciarSesion("alex", "alex", false);
-    // this.setState({ workFinished: true });
-    // this.scroll("resultados");
+    this.iniciarSesion("alex", "alex", false);
+    this.setState({ workFinished: true });
   }
 
   iniciarSesion = (username, password, remember) => {
@@ -71,7 +70,8 @@ class App extends Component {
 
         // Lanzar el toast y cerrar el diálogo
         this.lanzarToast("success", `¡Sesión iniciada satisfactoriamente :)!`);
-        this.scroll("procesar_trabajo");
+        // this.scroll("procesar_trabajo");
+        this.scroll("resultados");
       })
       .catch(error => {
         this.lanzarToast("error", `No se ha podido iniciar sesion.`);
@@ -216,42 +216,6 @@ class App extends Component {
           />
         </div>
       </div>
-      // <>
-      //   <Menu scroll={this.scroll} />
-      //   <div>
-      //     <IniciarSesion
-      //       iniciarSesion={this.iniciarSesion}
-      //       className="mt-5"
-      //       ref={this.iniciarSesionRef}
-      //     />
-      //
-      //     {this.state.workInProgress ? (
-      //       <div class="spinner-border text-primary" role="status">
-      //         <span class="sr-only">Loading...</span>
-      //       </div>
-      //     ) : (
-      // <ProcesarTrabajo
-      //   handleFileOnChange={this.handleFileOnChange}
-      //   procesarTrabajo={this.procesarTrabajo}
-      //   ref={this.procesarTrabajoRef}
-      // />
-      //     )}
-      //     <Resultados ref={this.resultadosRef} />
-      //   </div>
-      // <div>
-      //   <ToastContainer
-      //     position="bottom-center"
-      //     autoClose={3500}
-      //     hideProgressBar
-      //     newestOnTop={false}
-      //     closeOnClick
-      //     rtl={false}
-      //     pauseOnVisibilityChange
-      //     draggable
-      //     pauseOnHover
-      //   />
-      // </div>
-      // </>
     );
   }
 }
